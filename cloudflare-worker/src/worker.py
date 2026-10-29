@@ -152,15 +152,8 @@ class Default(WorkerEntrypoint):
         data = await self.read_json(request)
         expected = getattr(self.env, "ADMIN_PASSWORD", "")
         supplied = clean(data.get("password"), 300)
-        ip = clean(request.headers.get("CF-Connecting-IP") or "unknown", 60)
-        window_start = (now_utc() - timedelta(minutes=15)).isoformat()
-        attempts = await self.env.DB.prepare("SELECT COUNT(*) AS n FROM admin_login_attempts WHERE ip = ? AND created_at >= ?").bind(ip, window_start).first()
-        if attempts and int(attempts["n"]) >= 8:
-            return json_response({"error": "Too many sign-in attempts. Wait 15 minutes and try again."}, 429)
         if len(expected) < 12 or not hmac.compare_digest(supplied, expected):
-            await self.env.DB.prepare("INSERT INTO admin_login_attempts (id, ip, created_at) VALUES (?, ?, ?)").bind(secrets.token_hex(12), ip, iso_now()).run()
             return json_response({"error": "Incorrect password."}, 401)
-        await self.env.DB.prepare("DELETE FROM admin_login_attempts WHERE ip = ?").bind(ip).run()
         return json_response({"ok": True}, headers={"set-cookie": self.session_cookie()})
 
     async def create_booking(self, request):
@@ -306,7 +299,6 @@ class Default(WorkerEntrypoint):
 
     async def scheduled(self, controller, env, ctx):
         now = now_utc()
-        await env.DB.prepare("DELETE FROM admin_login_attempts WHERE created_at < ?").bind((now - timedelta(days=1)).isoformat()).run()
         soon = (now + timedelta(hours=24)).isoformat()
         later = (now + timedelta(hours=25)).isoformat()
         due_bookings = await env.DB.prepare("SELECT * FROM bookings WHERE status='confirmed' AND whatsapp_opt_in=1 AND appointment_reminder_sent_at IS NULL AND julianday(appointment_at) >= julianday(?) AND julianday(appointment_at) < julianday(?) LIMIT 50").bind(soon, later).all()
