@@ -39,7 +39,7 @@ Requirements: Node.js/npm, Python 3.12+, and `uv`.
 
 ## Connect GitHub for automatic Worker deploys
 
-The existing Cloudflare Pages project does not execute Python. In **Workers & Pages**, create a Worker connected to `Pratikkarthiya/Dasaram-garage`, set the root directory to `cloudflare-worker`, and use `uv run pywrangler deploy` as the deploy command. Configure the D1 binding and database ID in the Worker's settings or `wrangler.jsonc`, and add the secrets above in the Worker settings. Keep the Worker name consistent with the `name` in `wrangler.jsonc`. Cloudflare Workers Builds can deploy a Worker automatically on Git pushes.
+The existing Cloudflare Pages project does not execute Python. In **Workers & Pages**, create a Worker connected to `Pratikkarthiya/Dasaram-garage`, set the root directory to `cloudflare-worker`, and use `uv run pywrangler deploy` as the deploy command. Configure the D1 binding and database ID in the Worker's settings or `wrangler.jsonc`, and add the secrets above in the Worker settings. Name the Worker `dasaram-garage-python` to match `wrangler.jsonc`. Cloudflare Workers Builds can deploy a Worker automatically on Git pushes.
 
 ## WhatsApp setup
 
