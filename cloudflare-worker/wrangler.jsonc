@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "dasaram-garage",
+  "name": "dasaram-garage-python",
   "main": "src/worker.py",
   "compatibility_date": "2026-10-29",
   "compatibility_flags": ["python_workers"],
