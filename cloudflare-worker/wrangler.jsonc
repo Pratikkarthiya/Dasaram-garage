@@ -13,7 +13,7 @@
     {
       "binding": "DB",
       "database_name": "dasaram-garage-db",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "1a5b5e05-63ad-476c-82b5-5555d2e6b1c1",
       "migrations_dir": "migrations"
     }
   ],
