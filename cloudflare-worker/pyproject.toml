@@ -1,0 +1,9 @@
+[project]
+name = "dasaram-garage"
+version = "1.0.0"
+description = "Dasaram Garage booking and service reminder app"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = ["workers-py", "workers-runtime-sdk"]
